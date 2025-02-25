@@ -7,6 +7,7 @@
     "frontdev": "vite",
     "backdev": "nodemon server.js",
     "build": "vite build",
+    "backBuild": "node server.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },

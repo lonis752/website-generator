@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import path from "path";
 
 import express from "express";
 import cors from "cors";
@@ -11,6 +12,7 @@ app.use(cors());
 dotenv.config();
 const API_KEY = process.env.API_KEY;
 const port = process.env.PORT;
+const __dirname = path.resolve();
 
 const openai = new OpenAI({ apiKey: API_KEY, dangerouslyAllowBrowser: true });
 
@@ -34,6 +36,14 @@ app.get("/code", async (req, res) => {
   console.log(completion.choices[0].message);
   res.send(completion.choices[0].message);
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "/client", "dist", "index.html"));
+  });
+}
 
 app.listen(port, () => {
   console.log(`Server is up and running on port ${port}`);

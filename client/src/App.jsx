@@ -4,12 +4,17 @@ const App = () => {
   const [code, setCode] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
+  const URL =
+    import.meta.env.MODE === "development"
+      ? "http://localhost:8000/code"
+      : "/code";
+
   const getCode = async () => {
     setIsLoading(true);
     const response = await fetch("http://localhost:8000/code");
     const data = await response.json();
     const content = data.content;
-    const validContent = content.split("```")
+    const validContent = content.split("```");
     console.log(validContent);
     setCode(validContent);
     setIsLoading(false);
@@ -24,11 +29,19 @@ const App = () => {
         }
       >
         <div className="flex gap-2">
-          <h1 className="font-bold text-lg sm:text-2xl md:text-5xl">Building A New Site</h1>
+          <h1 className="font-bold text-lg sm:text-2xl md:text-5xl">
+            Building A New Site
+          </h1>
           <div className="flex gap-1">
-            <h1 className="font-bold text-lg sm:text-2xl md:text-5xl animate-bounce">.</h1>
-            <h1 className="font-bold text-lg sm:text-2xl md:text-5xl animate-bounce">.</h1>
-            <h1 className="font-bold text-lg sm:text-2xl md:text-5xl animate-bounce">.</h1>
+            <h1 className="font-bold text-lg sm:text-2xl md:text-5xl animate-bounce">
+              .
+            </h1>
+            <h1 className="font-bold text-lg sm:text-2xl md:text-5xl animate-bounce">
+              .
+            </h1>
+            <h1 className="font-bold text-lg sm:text-2xl md:text-5xl animate-bounce">
+              .
+            </h1>
           </div>
         </div>
         <div role="status">
@@ -52,7 +65,13 @@ const App = () => {
       </div>
       <div className={isLoading ? "hidden" : ""}>
         <div className="flex items-center justify-between p-10 bg-blue-200">
-          <h1 className="font-bold text-xl sm:text-2xl md:text-5xl text-blue-700">GENERATE A NEW SITE</h1>
+          <div className="flex items-center gap-3">
+            <img src="favicon.ico"/>
+            <h1 className="font-bold text-xl sm:text-2xl md:text-5xl text-blue-700">
+              GENERATE A NEW SITE
+            </h1>
+          </div>
+
           <button
             className="font-bold border-2 border-blue-400 hover:bg-blue-400 bg-blue-700 text-white rounded-4xl p-2"
             onClick={getCode}
@@ -60,8 +79,7 @@ const App = () => {
             ↻ Generate
           </button>
         </div>
-        <div
-            dangerouslySetInnerHTML={{ __html: code }}></div>
+        <div dangerouslySetInnerHTML={{ __html: code }}></div>
       </div>
     </>
   );
